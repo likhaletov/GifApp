@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     private var networkManager: NetworkProtocol
     
     private var model: [Model] = []
-    
+
     private var offset: String?
     private var lastUrlQuery: URL?
     
@@ -127,7 +127,6 @@ class ViewController: UIViewController {
                         print(error.localizedDescription)
                     }
                     
-                    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -136,10 +135,7 @@ class ViewController: UIViewController {
             
         } else {
             let url = URL.with(string: lastUrlQuery!.absoluteString + "&pos=" + page)
-            print("New URL Mfacka \(url)")
-            
-            // зафетчить данные
-            // получить данные
+            print("new url: \(url)")
             
             networkManager.obtainData(from: url, completion: { (result) in
                 
@@ -151,10 +147,10 @@ class ViewController: UIViewController {
                     do {
                         let response = try decoder.decode(GifObjectResponse.self, from: data)
                         
-                        // обновить индекс пагинации
+                        // update pagination index
                         self.offset = response.next
                         
-                        // добавить данные к массиву
+                        // add new data to the array
                         response.results.forEach { (gifData) in
                             
                             gifData.media.forEach { (gifMedia) in
@@ -172,14 +168,13 @@ class ViewController: UIViewController {
                             }
                         }
                         
-                        // обновить tableView
                         DispatchQueue.main.async {
                             self.resultTableView.reloadData()
                         }
                     } catch let error {
                         print(error.localizedDescription)
                     }
-
+                    
                 }
                 
             })
@@ -206,10 +201,8 @@ extension ViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchText = searchBar.text else { return }
-        
         if !searchText.isEmpty {
             clearExistsResults()
-            
             fetchData(with: searchText)
             searchBar.text = ""
         }
@@ -217,9 +210,7 @@ extension ViewController: UISearchBarDelegate {
 }
 
 extension ViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
+    func updateSearchResults(for searchController: UISearchController) {  }
 }
 
 extension ViewController: UITableViewDataSource {
@@ -244,10 +235,10 @@ extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == model.count - 1 {
-            print("last cell is seen")
+            print("saw the last cell")
             
             if let url = lastUrlQuery, let page = offset {
-                print("у нас есть и прошлый урл, и новая позиция пагинации. продолжаем")
+                print("we have old url, new pagination position. continue.")
                 fetchData(with: url.absoluteString, and: page)
             }
             
