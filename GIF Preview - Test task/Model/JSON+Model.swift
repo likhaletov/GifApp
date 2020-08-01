@@ -8,7 +8,6 @@
 
 import Foundation
 
-// MARK: - API model
 struct GifObjectResponse: Decodable {
     let results: [GifData]
     let next: String

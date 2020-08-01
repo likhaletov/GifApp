@@ -11,6 +11,7 @@ import UIKit
 class MainScreenViewController: UIViewController {
     
     let mainView = MainScreenView()
+    private var isLoading = false
     
     private var networkManager: NetworkProtocol
     
@@ -41,11 +42,12 @@ class MainScreenViewController: UIViewController {
         )
     }
     
-    @objc func checkPagination() {
+    @objc private func checkPagination() {
         if offset != nil {
             print("it's ok.")
             print("value is \(offset ?? "")")
-            print("last url = \(lastQuery ?? "damn")")
+            print("current query = \(lastQuery ?? "damn")")
+            print("model is: \(model.count)")
         }
     }
     
@@ -76,9 +78,7 @@ class MainScreenViewController: UIViewController {
     }
     
     private func fetchData(with query: String, and page: String = "") {
-//        let url = URL.with(string: Settings.api + query)
         let url = URL.with(string: Settings.api + query, page: page)
-        print("URL::: \(url.absoluteString)")
         
         networkManager.obtainData(from: url, completion: { [weak self] (result) in
             guard let self = self else { return }
@@ -89,22 +89,29 @@ class MainScreenViewController: UIViewController {
                 
                 do {
                     let response = try decoder.decode(GifObjectResponse.self, from: data)
-                    self.offset = response.next
-                    print("Pagination: \(self.offset ?? "pagination offset error")")
+                    self.offset = String(Int(response.next)! + 1)
+                    print("Next response: \(response.next)")
                     
-                    _ = response.results.map { (lolka) in
-                        lolka.media.map { (lolych) in
-                            let newDamnIt = Model(previewImageURL: lolych.tinygif.preview,
-                                                  imageURL: lolych.gif.url,
-                                                  imageID: lolka.id
+                    self.isLoading = false
+                    if !response.results.isEmpty {
+                        let id = response.results.map { $0.id }
+                        let previews = response.results.flatMap { $0.media.map { $0.tinygif.preview } }
+                        let images = response.results.flatMap { $0.media.map { $0.gif.url } }
+                        
+                        for item in 0..<id.count {
+                            let newItem = Model(
+                                previewImageURL: previews[item],
+                                imageURL: images[item],
+                                imageID: id[item]
                             )
-                            self.model.append(newDamnIt)
+                            self.model.append(newItem)
+                        }
+                        
+                        DispatchQueue.main.async {
+                            self.mainView.resultTableView.reloadData()
                         }
                     }
                     
-                    DispatchQueue.main.async {
-                        self.mainView.resultTableView.reloadData()
-                    }
                 } catch let error {
                     print(error.localizedDescription)
                 }
@@ -122,6 +129,18 @@ class MainScreenViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if !isLoading && mainView.resultTableView.contentOffset.y >= (mainView.resultTableView.contentSize.height - mainView.resultTableView.frame.height) {
+            isLoading = true
+            print("scrolling!")
+            print("saw the last cell")
+            guard let offset = self.offset, let lastQuery = self.lastQuery else { return }
+            print("OFFSET \(offset)")
+            print("Last Query \(lastQuery)")
+            fetchData(with: lastQuery, and: offset)
+        }
     }
     
 }
@@ -165,15 +184,4 @@ extension MainScreenViewController: UITableViewDelegate {
         let detailVC = DetailViewController(with: fullImageURL)
         navigationController?.pushViewController(detailVC, animated: true)
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == model.count - 1 {
-            print("saw the last cell")
-            guard let offset = self.offset, let lastQuery = self.lastQuery else { return }
-            print("OFFSET \(offset)")
-            print("Last Query \(lastQuery)")
-            fetchData(with: lastQuery, and: offset)
-        }
-    }
-    
 }
