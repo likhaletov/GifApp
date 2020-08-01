@@ -62,7 +62,7 @@ class ViewController: UIViewController {
         resultTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reusableIdentifier)
         resultTableView.delegate = self
         resultTableView.dataSource = self
-        resultTableView.estimatedRowHeight = 110.0
+        resultTableView.rowHeight = 110.0
         
         view.addSubview(resultTableView)
         
