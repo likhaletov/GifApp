@@ -10,8 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var dataFetcher = DataFetcher()
-    private var dataDecoder = DataJsonDecoder()
+    private var networkManager = NetworkManager()
     
     private var model: [Model] = []
     
@@ -32,7 +31,7 @@ class ViewController: UIViewController {
     }
     
     private func configureUI() {
-        title = "tenor.com API"
+        title = "tenor.com GIF API"
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Check pagination", style: .plain, target: self, action: #selector(checkPagination))
     }
@@ -41,7 +40,7 @@ class ViewController: UIViewController {
     func checkPagination() {
         if offset != nil {
             print("it's ok.")
-            print("value is \(offset)")
+            print("value is \(offset ?? "")")
             print("last url = \(lastUrlQuery)")
         }
     }
@@ -63,7 +62,7 @@ class ViewController: UIViewController {
         resultTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reusableIdentifier)
         resultTableView.delegate = self
         resultTableView.dataSource = self
-        resultTableView.rowHeight = 110.0
+        resultTableView.estimatedRowHeight = 110.0
         
         view.addSubview(resultTableView)
         
@@ -91,39 +90,49 @@ class ViewController: UIViewController {
             print(url)
             lastUrlQuery = url
             
-            dataFetcher.obtain(from: url, completion: { [weak self] (data) in
+            networkManager.obtainData(from: url, completion: { [weak self] (result) in
                 
                 guard let self = self else { return }
                 
-                let response = self.dataDecoder.decode(model: GifObjectResponse.self, from: data)
-                
-                self.offset = response.next
-                print("Pagination: \(self.offset)")
-                
-                response.results.forEach { (gifData) in
+                switch result {
+                case .success(let data):
+                    let decoder = JSONDecoder()
                     
-                    gifData.media.forEach { (gifMedia) in
-                        let previewImageUrl = gifMedia.tinygif.preview
-                        let imageUrl = gifMedia.gif.url
-                        let id = gifData.id
+                    do {
+                        let response = try decoder.decode(GifObjectResponse.self, from: data)
+                        self.offset = response.next
+                        print("Pagination: \(self.offset ?? "pagination offset error")")
                         
-                        let newItem = Model(
-                            previewImageURL: previewImageUrl,
-                            imageURL: imageUrl,
-                            imageID: id
-                        )
+                        response.results.forEach { (gifData) in
+                            
+                            gifData.media.forEach { (gifMedia) in
+                                let previewImageUrl = gifMedia.tinygif.preview
+                                let imageUrl = gifMedia.gif.url
+                                let id = gifData.id
+                                
+                                let newItem = Model(
+                                    previewImageURL: previewImageUrl,
+                                    imageURL: imageUrl,
+                                    imageID: id
+                                )
+                                
+                                self.model.append(newItem)
+                            }
+                        }
                         
-                        self.model.append(newItem)
+                        DispatchQueue.main.async {
+                            self.resultTableView.reloadData()
+                        }
+                    } catch let error {
+                        print(error.localizedDescription)
                     }
+                    
+                    
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
                 
-                DispatchQueue.main.async {
-                    self.resultTableView.reloadData()
-                }
-                
-            }) { (error) in
-                print(error.localizedDescription)
-            }
+            })
             
         } else {
             let url = URL.with(string: lastUrlQuery!.absoluteString + "&pos=" + page)
@@ -132,56 +141,61 @@ class ViewController: UIViewController {
             // зафетчить данные
             // получить данные
             
-            dataFetcher.obtain(from: url, completion: { (data) in
+            networkManager.obtainData(from: url, completion: { (result) in
                 
-                let response = self.dataDecoder.decode(model: GifObjectResponse.self, from: data)
-                
-                // обновить индекс пагинации
-                self.offset = response.next
-                
-                // добавить данные к массиву
-                response.results.forEach { (gifData) in
-                    
-                    gifData.media.forEach { (gifMedia) in
-                        let previewImageUrl = gifMedia.tinygif.preview
-                        let imageUrl = gifMedia.gif.url
-                        let id = gifData.id
+                switch result {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .success(let data):
+                    let decoder = JSONDecoder()
+                    do {
+                        let response = try decoder.decode(GifObjectResponse.self, from: data)
                         
-                        let newItem = Model(
-                            previewImageURL: previewImageUrl,
-                            imageURL: imageUrl,
-                            imageID: id
-                        )
+                        // обновить индекс пагинации
+                        self.offset = response.next
                         
-                        self.model.append(newItem)
+                        // добавить данные к массиву
+                        response.results.forEach { (gifData) in
+                            
+                            gifData.media.forEach { (gifMedia) in
+                                let previewImageUrl = gifMedia.tinygif.preview
+                                let imageUrl = gifMedia.gif.url
+                                let id = gifData.id
+                                
+                                let newItem = Model(
+                                    previewImageURL: previewImageUrl,
+                                    imageURL: imageUrl,
+                                    imageID: id
+                                )
+                                
+                                self.model.append(newItem)
+                            }
+                        }
+                        
+                        // обновить tableView
+                        DispatchQueue.main.async {
+                            self.resultTableView.reloadData()
+                        }
+                    } catch let error {
+                        print(error.localizedDescription)
                     }
+
                 }
                 
-                // обновить tableView
-                DispatchQueue.main.async {
-                    self.resultTableView.reloadData()
-                }
-                
-            }) { (error) in
-                print(error)
-            }
-            
+            })
             
         }
-        
         
     }
     
 }
 
 extension ViewController: UISearchBarDelegate {
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         clearExistsResults()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
         guard let searchText = searchBar.text else { return }
         
         if !searchText.isEmpty {
@@ -190,10 +204,7 @@ extension ViewController: UISearchBarDelegate {
             fetchData(with: searchText)
             searchBar.text = ""
         }
-        
     }
-    
-    
 }
 
 extension ViewController: UISearchResultsUpdating {
@@ -203,28 +214,21 @@ extension ViewController: UISearchResultsUpdating {
 }
 
 extension ViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reusableIdentifier, for: indexPath) as! CustomTableViewCell
-        
         let dataSource = model[indexPath.row]
         cell.configure(with: dataSource)
-        
         return cell
     }
-    
 }
 
 extension ViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let fullImageURL = model[indexPath.row].imageURL
-        
         let detailVC = DetailViewController(with: fullImageURL)
         navigationController?.pushViewController(detailVC, animated: true)
     }
@@ -235,7 +239,6 @@ extension ViewController: UITableViewDelegate {
             
             if let url = lastUrlQuery, let page = offset {
                 print("у нас есть и прошлый урл, и новая позиция пагинации. продолжаем")
-                
                 fetchData(with: url.absoluteString, and: page)
             }
             

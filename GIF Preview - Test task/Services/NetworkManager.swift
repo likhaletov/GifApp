@@ -8,18 +8,23 @@
 
 import UIKit
 
-class DataFetcher {
+enum NetworkError: Error {
+    case error
+}
+
+class NetworkManager {
     
-    func obtain(from url: URL, completion: @escaping ((Data) -> Void), completionError: @escaping ((Error) -> Void)) {
+    func obtainData(from url: URL, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard response != nil else { return }
+            guard let data = data else { return }
             
-            if let error = error {
-                completionError(error)
-            } else if let data = data {
-                completion(data)
+            if error != nil {
+                completion(.failure(.error))
+            } else {
+                completion(.success(data))
             }
             
         }

@@ -15,9 +15,8 @@
 		AA8BC0BA24B6F2B3003798A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA8BC0B824B6F2B3003798A6 /* LaunchScreen.storyboard */; };
 		AA8BC0C224B6F6A2003798A6 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C124B6F6A2003798A6 /* Settings.swift */; };
 		AA8BC0C424B6FAA6003798A6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C324B6FAA6003798A6 /* Model.swift */; };
-		AA8BC0C624B712B0003798A6 /* DataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C524B712B0003798A6 /* DataFetcher.swift */; };
+		AA8BC0C624B712B0003798A6 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C524B712B0003798A6 /* NetworkManager.swift */; };
 		AA8BC0C824B712D9003798A6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C724B712D9003798A6 /* Extensions.swift */; };
-		AA8BC0CA24B7174A003798A6 /* DataJsonDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C924B7174A003798A6 /* DataJsonDecoder.swift */; };
 		AA8BC0D424B91961003798A6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0D324B91960003798A6 /* CustomImageView.swift */; };
 		AA8BC0D624B989C4003798A6 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -33,9 +32,8 @@
 		AA8BC0BB24B6F2B3003798A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA8BC0C124B6F6A2003798A6 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		AA8BC0C324B6FAA6003798A6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		AA8BC0C524B712B0003798A6 /* DataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetcher.swift; sourceTree = "<group>"; };
+		AA8BC0C524B712B0003798A6 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		AA8BC0C724B712D9003798A6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		AA8BC0C924B7174A003798A6 /* DataJsonDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJsonDecoder.swift; sourceTree = "<group>"; };
 		AA8BC0D324B91960003798A6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,8 +94,7 @@
 		AA8BC0CC24B767E1003798A6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				AA8BC0C524B712B0003798A6 /* DataFetcher.swift */,
-				AA8BC0C924B7174A003798A6 /* DataJsonDecoder.swift */,
+				AA8BC0C524B712B0003798A6 /* NetworkManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -192,12 +189,11 @@
 			files = (
 				AA752A0524BA374D00DF9D0C /* DetailViewController.swift in Sources */,
 				AA8BC0C424B6FAA6003798A6 /* Model.swift in Sources */,
-				AA8BC0CA24B7174A003798A6 /* DataJsonDecoder.swift in Sources */,
 				AA8BC0D624B989C4003798A6 /* CustomTableViewCell.swift in Sources */,
 				AA8BC0B224B6F2B1003798A6 /* ViewController.swift in Sources */,
 				AA8BC0AE24B6F2B1003798A6 /* AppDelegate.swift in Sources */,
 				AA8BC0C224B6F6A2003798A6 /* Settings.swift in Sources */,
-				AA8BC0C624B712B0003798A6 /* DataFetcher.swift in Sources */,
+				AA8BC0C624B712B0003798A6 /* NetworkManager.swift in Sources */,
 				AA8BC0B024B6F2B1003798A6 /* SceneDelegate.swift in Sources */,
 				AA8BC0C824B712D9003798A6 /* Extensions.swift in Sources */,
 				AA8BC0D424B91961003798A6 /* CustomImageView.swift in Sources */,

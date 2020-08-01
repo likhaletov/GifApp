@@ -36,7 +36,6 @@ class DetailViewController: UIViewController {
     
     init(with url: URL) {
         self.url = url
-        
         super.init(nibName: nil, bundle: nil)
     }
     
