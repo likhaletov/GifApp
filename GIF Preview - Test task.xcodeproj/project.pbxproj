@@ -21,6 +21,7 @@
 		AA8BC0D624B989C4003798A6 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */; };
 		AACA342124D592F900D1F538 /* NetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACA342024D592F800D1F538 /* NetworkProtocol.swift */; };
 		AACA342324D595B600D1F538 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACA342224D595B600D1F538 /* Model.swift */; };
+		AACA342524D5A3A900D1F538 /* MainScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACA342424D5A3A900D1F538 /* MainScreenView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		AACA342024D592F800D1F538 /* NetworkProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProtocol.swift; sourceTree = "<group>"; };
 		AACA342224D595B600D1F538 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		AACA342424D5A3A900D1F538 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 		AA8BC0D024B76A64003798A6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				AACA342424D5A3A900D1F538 /* MainScreenView.swift */,
 				AA8BC0D324B91960003798A6 /* CustomImageView.swift */,
 				AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */,
 			);
@@ -194,6 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA752A0524BA374D00DF9D0C /* DetailViewController.swift in Sources */,
+				AACA342524D5A3A900D1F538 /* MainScreenView.swift in Sources */,
 				AA8BC0C424B6FAA6003798A6 /* JSON+Model.swift in Sources */,
 				AA8BC0D624B989C4003798A6 /* CustomTableViewCell.swift in Sources */,
 				AACA342324D595B600D1F538 /* Model.swift in Sources */,

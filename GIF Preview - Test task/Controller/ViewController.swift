@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    private var mainView = MainScreenView()
+    
     private var networkManager: NetworkProtocol
     
     private var model: [Model] = []
@@ -17,11 +19,9 @@ class ViewController: UIViewController {
     private var offset: String?
     private var lastUrlQuery: URL?
     
-    lazy var resultTableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .plain)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    override func loadView() {
+        super.view = mainView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,19 +59,8 @@ class ViewController: UIViewController {
     }
     
     private func configureTableView() {
-        resultTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reusableIdentifier)
-        resultTableView.delegate = self
-        resultTableView.dataSource = self
-        resultTableView.rowHeight = 110.0
-        
-        view.addSubview(resultTableView)
-        
-        NSLayoutConstraint.activate([
-            resultTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            resultTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            resultTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            resultTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
+        mainView.resultTableView.delegate = self
+        mainView.resultTableView.dataSource = self
     }
     
     private func clearExistsResults() {
@@ -79,7 +68,7 @@ class ViewController: UIViewController {
             model.removeAll()
             offset = nil
             lastUrlQuery = nil
-            resultTableView.reloadData()
+            mainView.resultTableView.reloadData()
         }
     }
     
@@ -121,7 +110,7 @@ class ViewController: UIViewController {
                         }
                         
                         DispatchQueue.main.async {
-                            self.resultTableView.reloadData()
+                            self.mainView.resultTableView.reloadData()
                         }
                     } catch let error {
                         print(error.localizedDescription)
@@ -169,7 +158,7 @@ class ViewController: UIViewController {
                         }
                         
                         DispatchQueue.main.async {
-                            self.resultTableView.reloadData()
+                            self.mainView.resultTableView.reloadData()
                         }
                     } catch let error {
                         print(error.localizedDescription)
