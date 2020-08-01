@@ -177,14 +177,8 @@ class ViewController: UIViewController {
 
 extension ViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
         clearExistsResults()
-        
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -204,7 +198,6 @@ extension ViewController: UISearchBarDelegate {
 }
 
 extension ViewController: UISearchResultsUpdating {
-    
     func updateSearchResults(for searchController: UISearchController) {
         
     }
