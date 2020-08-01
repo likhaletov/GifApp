@@ -24,11 +24,22 @@ class MainScreenViewController: UIViewController {
         super.view = mainView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.lastQuery = "cats"
+        fetchData(with: lastQuery!)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureSearch()
         configureTableView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
     }
     
     private func configureUI() {
@@ -133,7 +144,7 @@ class MainScreenViewController: UIViewController {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if !isLoading && mainView.resultTableView.contentOffset.y >= (mainView.resultTableView.contentSize.height - mainView.resultTableView.frame.height) {
-            isLoading = true
+            self.isLoading = true
             print("scrolling!")
             print("saw the last cell")
             guard let offset = self.offset, let lastQuery = self.lastQuery else { return }
