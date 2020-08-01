@@ -8,21 +8,17 @@
 
 import UIKit
 
-enum NetworkError: Error {
-    case error
-}
-
-class NetworkManager {
+class NetworkManager: NetworkProtocol {
     
-    func obtainData(from url: URL, completion: @escaping (Result<Data, NetworkError>) -> Void) {
+    func obtainData(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard response != nil else { return }
             guard let data = data else { return }
             
-            if error != nil {
-                completion(.failure(.error))
+            if let error = error {
+                completion(.failure(error))
             } else {
                 completion(.success(data))
             }

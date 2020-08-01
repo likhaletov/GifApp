@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var networkManager = NetworkManager()
+    private var networkManager: NetworkProtocol
     
     private var model: [Model] = []
     
@@ -186,6 +186,15 @@ class ViewController: UIViewController {
             
         }
         
+    }
+    
+    init(networkManager: NetworkProtocol) {
+        self.networkManager = networkManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
 }

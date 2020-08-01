@@ -19,6 +19,7 @@
 		AA8BC0C824B712D9003798A6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0C724B712D9003798A6 /* Extensions.swift */; };
 		AA8BC0D424B91961003798A6 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0D324B91960003798A6 /* CustomImageView.swift */; };
 		AA8BC0D624B989C4003798A6 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */; };
+		AACA342124D592F900D1F538 /* NetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACA342024D592F800D1F538 /* NetworkProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		AA8BC0C724B712D9003798A6 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AA8BC0D324B91960003798A6 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		AA8BC0D524B989C4003798A6 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		AACA342024D592F800D1F538 /* NetworkProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				AA8BC0C524B712B0003798A6 /* NetworkManager.swift */,
+				AACA342024D592F800D1F538 /* NetworkProtocol.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 				AA8BC0C224B6F6A2003798A6 /* Settings.swift in Sources */,
 				AA8BC0C624B712B0003798A6 /* NetworkManager.swift in Sources */,
 				AA8BC0B024B6F2B1003798A6 /* SceneDelegate.swift in Sources */,
+				AACA342124D592F900D1F538 /* NetworkProtocol.swift in Sources */,
 				AA8BC0C824B712D9003798A6 /* Extensions.swift in Sources */,
 				AA8BC0D424B91961003798A6 /* CustomImageView.swift in Sources */,
 			);
