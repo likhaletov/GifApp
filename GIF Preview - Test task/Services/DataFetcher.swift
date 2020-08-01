@@ -12,8 +12,7 @@ class DataFetcher {
     
     func obtain(from url: URL, completion: @escaping ((Data) -> Void), completionError: @escaping ((Error) -> Void)) {
         
-        let session = URLSession.shared
-        let task = session.dataTask(with: url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard response != nil else { return }
             

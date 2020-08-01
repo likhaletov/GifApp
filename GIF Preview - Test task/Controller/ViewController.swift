@@ -26,7 +26,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
         configureSearch()
         configureTableView()
@@ -35,7 +34,6 @@ class ViewController: UIViewController {
     private func configureUI() {
         title = "tenor.com API"
         view.backgroundColor = .white
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Check pagination", style: .plain, target: self, action: #selector(checkPagination))
     }
     
@@ -65,9 +63,10 @@ class ViewController: UIViewController {
         resultTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reusableIdentifier)
         resultTableView.delegate = self
         resultTableView.dataSource = self
-        
         resultTableView.rowHeight = 110.0
+        
         view.addSubview(resultTableView)
+        
         NSLayoutConstraint.activate([
             resultTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             resultTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
