@@ -10,11 +10,11 @@ import Foundation
 
 extension URL {
     
-    static func with(string: String) -> URL {
+    static func with(string: String, page: String = "") -> URL {
         
         let query = string.replacingOccurrences(of: " ", with: "%20")
         
-        if let url = URL(string: query) {
+        if let url = URL(string: query + "&pos=" + page) {
             return url
         } else {
             print("API supports only english lang")

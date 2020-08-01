@@ -21,21 +21,21 @@ class CustomImageView: UIImageView {
         return view
     }()
     
-//    var imageUrlString: String?
+    var imageUrlString: String?
     
-    var task: URLSessionDataTask!
+//    var task: URLSessionDataTask!
     
     func loadImage(from url: URL) {
         
-//        imageUrlString = url.absoluteString
+        imageUrlString = url.absoluteString
         
         image = nil
         
         addSpinner()
         
-        if let task = task {
-            task.cancel()
-        }
+//        if let task = task {
+//            task.cancel()
+//        }
         
         if let imageFromCache = imageCache.object(forKey: url.absoluteString as AnyObject) as? UIImage {
             self.image = imageFromCache
@@ -45,7 +45,7 @@ class CustomImageView: UIImageView {
             return
         }
         
-        task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data, let imageToCache = UIImage(data: data) else {
                 print("Can't load image")
@@ -56,11 +56,11 @@ class CustomImageView: UIImageView {
             
             DispatchQueue.main.async {
                 
-//                if self.imageUrlString == url.absoluteString {
+                if self.imageUrlString == url.absoluteString {
                     self.image = imageToCache
                     imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
                     print("PUT \(url.absoluteString) to cache")
-//                }
+                }
 
                 print("Image downloaded")
                 self.removeSpinner()
