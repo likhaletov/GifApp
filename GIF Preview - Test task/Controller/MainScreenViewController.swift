@@ -11,13 +11,27 @@ import UIKit
 class MainScreenViewController: UIViewController {
     
     private let mainView = MainScreenView()
-    private var model: [Model] = []
+    private var model: [Model] = [] {
+        didSet {
+            if model.isEmpty {
+                searchController.searchBar.resignFirstResponder()
+                if let cancelButton = searchController.searchBar.value(forKey: "cancelButton") as? UIButton {
+                    cancelButton.isEnabled = false
+                }
+            }
+            if !model.isEmpty {
+                print("model contains data")
+            }
+        }
+    }
     private var networkManager: NetworkProtocol
     
     // Pagination
     private var isLoading = false
     private var nextPage: String?
     private var currentQuery: String?
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func loadView() {
         super.view = mainView
@@ -60,16 +74,15 @@ class MainScreenViewController: UIViewController {
     }
     
     private func configureSearch() {
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Type your query"
         searchController.searchBar.delegate = self
         searchController.searchBar.showsCancelButton = true
-        searchController.searchBar.showsSearchResultsButton = true
         searchController.hidesNavigationBarDuringPresentation = false
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationController?.navigationBar.isTranslucent = false
     }
     
     private func configureTableView() {
@@ -151,6 +164,13 @@ class MainScreenViewController: UIViewController {
 extension MainScreenViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         clearExistsResults()
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            clearExistsResults()
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -159,7 +179,6 @@ extension MainScreenViewController: UISearchBarDelegate {
             clearExistsResults()
             self.currentQuery = searchText
             fetchData(with: searchText)
-            searchBar.text?.removeAll()
         }
     }
 }
