@@ -25,6 +25,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        webView.isOpaque = false
+        
         guard let url = url, let title = id else { return }
         navigationItem.title = title
         
