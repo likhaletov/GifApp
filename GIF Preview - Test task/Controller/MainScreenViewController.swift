@@ -52,6 +52,7 @@ class MainScreenViewController: UIViewController {
     private func initStart() {
         self.currentQuery = Settings.initSearchQuery
         guard let query = self.currentQuery else { return }
+        searchController.searchBar.text = query
         fetchData(with: query)
     }
     
