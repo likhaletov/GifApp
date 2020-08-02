@@ -16,7 +16,7 @@ private var imageCache: NSCache<AnyObject, AnyObject> = {
 class CustomImageView: UIImageView {
     
     private lazy var spinner: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .large)
+        let view = UIActivityIndicatorView(style: .gray)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
