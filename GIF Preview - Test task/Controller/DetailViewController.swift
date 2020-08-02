@@ -13,6 +13,7 @@ class DetailViewController: UIViewController {
     
     var webView: WKWebView!
     let url: URL?
+    let id: String?
     
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
@@ -24,7 +25,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let url = url else { return }
+        guard let url = url, let title = id else { return }
+        navigationItem.title = title
         
         let request = URLRequest(url: url)
         webView.load(request)
@@ -34,8 +36,9 @@ class DetailViewController: UIViewController {
         print("deallocated")
     }
     
-    init(with url: URL) {
+    init(with url: URL, and id: String) {
         self.url = url
+        self.id = id
         super.init(nibName: nil, bundle: nil)
     }
     

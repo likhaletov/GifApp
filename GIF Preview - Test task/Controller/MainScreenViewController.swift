@@ -146,7 +146,6 @@ class MainScreenViewController: UIViewController {
             fetchData(with: currentQuery, and: nextPage)
         }
     }
-    
 }
 
 extension MainScreenViewController: UISearchBarDelegate {
@@ -188,7 +187,8 @@ extension MainScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let fullImageURL = model[indexPath.row].imageURL
-        let detailVC = DetailViewController(with: fullImageURL)
+        let imageID = model[indexPath.row].imageID
+        let detailVC = DetailViewController(with: fullImageURL, and: imageID)
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

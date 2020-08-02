@@ -15,7 +15,7 @@ class GifPreviewTableViewCell: UITableViewCell {
     lazy var gifImageView: CustomImageView = {
         var imageView = CustomImageView()
         imageView.contentMode = .center
-        imageView.layer.cornerRadius = 30.0
+        imageView.layer.cornerRadius = 50
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
