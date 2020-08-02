@@ -58,20 +58,20 @@ class MainScreenViewController: UIViewController {
     private func configureUI() {
         title = "tenor.com GIF API"
         view.backgroundColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Check pagination",
-            style: .plain,
-            target: self,
-            action: #selector(checkPagination)
-        )
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(
+//            title: "Check pagination",
+//            style: .plain,
+//            target: self,
+//            action: #selector(checkPagination)
+//        )
     }
     
-    @objc private func checkPagination() {
-        guard let nextPage = nextPage, let query = currentQuery else { return }
-        print("Next page is: \(nextPage)")
-        print("Current query is: \(query)")
-        print("Current model count: \(model.count)")
-    }
+//    @objc private func checkPagination() {
+//        guard let nextPage = nextPage, let query = currentQuery else { return }
+//        print("Next page is: \(nextPage)")
+//        print("Current query is: \(query)")
+//        print("Current model count: \(model.count)")
+//    }
     
     private func configureSearch() {
         searchController.obscuresBackgroundDuringPresentation = false
