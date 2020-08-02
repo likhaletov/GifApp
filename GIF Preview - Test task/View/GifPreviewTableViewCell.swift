@@ -12,7 +12,7 @@ class GifPreviewTableViewCell: UITableViewCell {
     
     static let reusableID = "id"
     
-    lazy var gifImageView: CustomImageView = {
+    private lazy var gifImageView: CustomImageView = {
         var imageView = CustomImageView()
         imageView.contentMode = .center
         imageView.layer.cornerRadius = 50
@@ -21,7 +21,7 @@ class GifPreviewTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    lazy var gifIdLabel: UILabel = {
+    private lazy var gifIdLabel: UILabel = {
         var label = UILabel()
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +39,7 @@ class GifPreviewTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCustomImageView() {
+    private func setupCustomImageView() {
         addSubview(gifImageView)
         NSLayoutConstraint.activate([
             gifImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 11),
@@ -49,7 +49,7 @@ class GifPreviewTableViewCell: UITableViewCell {
         ])
     }
     
-    func setupImageIdLabel() {
+    private func setupImageIdLabel() {
         addSubview(gifIdLabel)
         NSLayoutConstraint.activate([
             gifIdLabel.leadingAnchor.constraint(equalTo: gifImageView.trailingAnchor, constant: 11),

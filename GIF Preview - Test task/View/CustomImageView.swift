@@ -8,20 +8,20 @@
 
 import UIKit
 
-var imageCache: NSCache<AnyObject, AnyObject> = {
+private var imageCache: NSCache<AnyObject, AnyObject> = {
     let cache = NSCache<AnyObject, AnyObject>()
     return cache
 }()
 
 class CustomImageView: UIImageView {
     
-    lazy var spinner: UIActivityIndicatorView = {
+    private lazy var spinner: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    var imageUrlString: String?
+    private var imageUrlString: String?
     
     func loadImage(from url: URL) {
         
@@ -53,7 +53,7 @@ class CustomImageView: UIImageView {
                     imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
                     print("PUT \(url.absoluteString) to cache")
                 }
-
+                
                 print("Image downloaded")
                 self.removeSpinner()
             }
@@ -64,7 +64,7 @@ class CustomImageView: UIImageView {
         
     }
     
-    func addSpinner() {
+    private func addSpinner() {
         addSubview(spinner)
         NSLayoutConstraint.activate([
             spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -74,7 +74,7 @@ class CustomImageView: UIImageView {
         spinner.startAnimating()
     }
     
-    func removeSpinner() {
+    private func removeSpinner() {
         spinner.removeFromSuperview()
     }
     

@@ -8,8 +8,8 @@
 
 import UIKit
 
-class MainScreenView: UIView {
-
+final class MainScreenView: UIView {
+    
     lazy var resultTableView: UITableView = {
         let view = UITableView(frame: .zero, style: .plain)
         view.translatesAutoresizingMaskIntoConstraints = false
