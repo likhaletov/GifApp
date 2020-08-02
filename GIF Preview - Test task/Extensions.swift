@@ -17,9 +17,12 @@ extension URL {
         if let url = URL(string: query + "&pos=" + page) {
             return url
         } else {
-            print("API supports only english lang")
-            return URL(string: Settings.api)!
+            let url = URL(string: Settings.api)
+            guard let defaultUrl = url else { fatalError("bad url") }
+            return defaultUrl
         }
+        
+        
     }
     
 }

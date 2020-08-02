@@ -10,4 +10,5 @@ import Foundation
 
 enum Settings {
     static let api = "https://api.tenor.com/v1/search?key=0RE3HUWJPDFM&ar_range=standard&media_filter=minimal&q="
+    static let initSearchQuery = "Cats"
 }

@@ -10,15 +10,14 @@ import UIKit
 
 class MainScreenViewController: UIViewController {
     
-    let mainView = MainScreenView()
-    private var isLoading = false
-    
+    private let mainView = MainScreenView()
+    private var model: [Model] = []
     private var networkManager: NetworkProtocol
     
-    private var model: [Model] = []
-    
-    private var offset: String?
-    private var lastQuery: String?
+    // Pagination
+    private var isLoading = false
+    private var nextPage: String?
+    private var currentQuery: String?
     
     override func loadView() {
         super.view = mainView
@@ -26,8 +25,7 @@ class MainScreenViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.lastQuery = "cats"
-        fetchData(with: lastQuery!)
+        initStart()
     }
     
     override func viewDidLoad() {
@@ -37,15 +35,16 @@ class MainScreenViewController: UIViewController {
         configureTableView()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    private func initStart() {
+        self.currentQuery = Settings.initSearchQuery
+        guard let query = self.currentQuery else { return }
+        fetchData(with: query)
     }
     
     private func configureUI() {
         title = "tenor.com GIF API"
         view.backgroundColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Check pagination",
             style: .plain,
             target: self,
@@ -54,12 +53,10 @@ class MainScreenViewController: UIViewController {
     }
     
     @objc private func checkPagination() {
-        if offset != nil {
-            print("it's ok.")
-            print("value is \(offset ?? "")")
-            print("current query = \(lastQuery ?? "damn")")
-            print("model is: \(model.count)")
-        }
+        guard let nextPage = nextPage, let query = currentQuery else { return }
+        print("Next page is: \(nextPage)")
+        print("Current query is: \(query)")
+        print("Current model count: \(model.count)")
     }
     
     private func configureSearch() {
@@ -83,7 +80,8 @@ class MainScreenViewController: UIViewController {
     private func clearExistsResults() {
         if !model.isEmpty {
             model.removeAll()
-            offset = nil
+            nextPage = nil
+            currentQuery = nil
             mainView.resultTableView.reloadData()
         }
     }
@@ -100,8 +98,7 @@ class MainScreenViewController: UIViewController {
                 
                 do {
                     let response = try decoder.decode(GifObjectResponse.self, from: data)
-                    self.offset = String(Int(response.next)! + 1)
-                    print("Next response: \(response.next)")
+                    self.nextPage = response.next
                     
                     self.isLoading = false
                     if !response.results.isEmpty {
@@ -145,12 +142,8 @@ class MainScreenViewController: UIViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if !isLoading && mainView.resultTableView.contentOffset.y >= (mainView.resultTableView.contentSize.height - mainView.resultTableView.frame.height) {
             self.isLoading = true
-            print("scrolling!")
-            print("saw the last cell")
-            guard let offset = self.offset, let lastQuery = self.lastQuery else { return }
-            print("OFFSET \(offset)")
-            print("Last Query \(lastQuery)")
-            fetchData(with: lastQuery, and: offset)
+            guard let nextPage = self.nextPage, let currentQuery = self.currentQuery else { return }
+            fetchData(with: currentQuery, and: nextPage)
         }
     }
     
@@ -165,9 +158,9 @@ extension MainScreenViewController: UISearchBarDelegate {
         guard let searchText = searchBar.text else { return }
         if !searchText.isEmpty {
             clearExistsResults()
-            self.lastQuery = searchText
+            self.currentQuery = searchText
             fetchData(with: searchText)
-            searchBar.text = ""
+            searchBar.text?.removeAll()
         }
     }
 }
@@ -182,15 +175,18 @@ extension MainScreenViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reusableIdentifier, for: indexPath) as! CustomTableViewCell
         let dataSource = model[indexPath.row]
-        cell.configure(with: dataSource)
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: GifPreviewTableViewCell.reusableID, for: indexPath) as? GifPreviewTableViewCell {
+            cell.configure(with: dataSource)
+            return cell
+        }
+        return UITableViewCell()
     }
 }
 
 extension MainScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let fullImageURL = model[indexPath.row].imageURL
         let detailVC = DetailViewController(with: fullImageURL)
         navigationController?.pushViewController(detailVC, animated: true)

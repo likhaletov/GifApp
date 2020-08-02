@@ -27,7 +27,7 @@ class MainScreenView: UIView {
     
     private func configureResultTableView() {
         resultTableView.rowHeight = 110.0
-        resultTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reusableIdentifier)
+        resultTableView.register(GifPreviewTableViewCell.self, forCellReuseIdentifier: GifPreviewTableViewCell.reusableID)
         
         addSubview(resultTableView)
         
@@ -35,7 +35,7 @@ class MainScreenView: UIView {
             resultTableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             resultTableView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             resultTableView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            resultTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+            resultTableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     

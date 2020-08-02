@@ -14,8 +14,7 @@ class NetworkManager: NetworkProtocol {
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
-            guard response != nil else { return }
-            guard let data = data else { return }
+            guard let _ = response, let data = data else { return }
             
             if let error = error {
                 completion(.failure(error))

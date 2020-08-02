@@ -1,5 +1,5 @@
 //
-//  CustomTableViewCell.swift
+//  GifPreviewTableViewCell.swift
 //  GIF Preview - Test task
 //
 //  Created by Dmitry Likhaletov on 11.07.2020.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class CustomTableViewCell: UITableViewCell {
+class GifPreviewTableViewCell: UITableViewCell {
     
-    static let reusableIdentifier = "reuseID"
+    static let reusableID = "id"
     
-    lazy var customImageView: CustomImageView = {
+    lazy var gifImageView: CustomImageView = {
         var imageView = CustomImageView()
         imageView.contentMode = .center
         imageView.layer.cornerRadius = 30.0
@@ -21,7 +21,7 @@ class CustomTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    lazy var imageIdLabel: UILabel = {
+    lazy var gifIdLabel: UILabel = {
         var label = UILabel()
         label.sizeToFit()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,6 +32,7 @@ class CustomTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCustomImageView()
         setupImageIdLabel()
+        accessoryType = .disclosureIndicator
     }
     
     required init?(coder: NSCoder) {
@@ -39,26 +40,26 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     func setupCustomImageView() {
-        addSubview(customImageView)
+        addSubview(gifImageView)
         NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 11),
-            customImageView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
-            customImageView.widthAnchor.constraint(equalToConstant: 100),
-            customImageView.heightAnchor.constraint(equalToConstant: 100)
+            gifImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 11),
+            gifImageView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            gifImageView.widthAnchor.constraint(equalToConstant: 100),
+            gifImageView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
     
     func setupImageIdLabel() {
-        addSubview(imageIdLabel)
+        addSubview(gifIdLabel)
         NSLayoutConstraint.activate([
-            imageIdLabel.leadingAnchor.constraint(equalTo: customImageView.trailingAnchor, constant: 11),
-            imageIdLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            gifIdLabel.leadingAnchor.constraint(equalTo: gifImageView.trailingAnchor, constant: 11),
+            gifIdLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
     
     func configure(with model: Model) {
-        customImageView.loadImage(from: model.previewImageURL)
-        imageIdLabel.text = "Image ID: " + model.imageID
+        gifImageView.loadImage(from: model.previewImageURL)
+        gifIdLabel.text = "Image ID: " + model.imageID
     }
     
 }

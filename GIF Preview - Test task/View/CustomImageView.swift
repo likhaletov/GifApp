@@ -23,24 +23,16 @@ class CustomImageView: UIImageView {
     
     var imageUrlString: String?
     
-//    var task: URLSessionDataTask!
-    
     func loadImage(from url: URL) {
         
         imageUrlString = url.absoluteString
-        
         image = nil
         
         addSpinner()
         
-//        if let task = task {
-//            task.cancel()
-//        }
-        
         if let imageFromCache = imageCache.object(forKey: url.absoluteString as AnyObject) as? UIImage {
             self.image = imageFromCache
-            
-            print("Load from cache")
+            print("Loading from cache..")
             removeSpinner()
             return
         }
