@@ -24,11 +24,17 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        webView.isOpaque = false
-        
         guard let url = url, let title = id else { return }
         navigationItem.title = title
+        
+        switch traitCollection.userInterfaceStyle {
+        case .light:
+            webView.isOpaque = true
+        case .dark:
+            webView.isOpaque = false
+        default:
+            webView.isOpaque = true
+        }
         
         let request = URLRequest(url: url)
         webView.load(request)
@@ -46,6 +52,24 @@ class DetailViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        let userInterfaceStyle = traitCollection.userInterfaceStyle
+        switch userInterfaceStyle {
+        case .light:
+            print("light active")
+            webView.isOpaque = true
+        case .dark:
+            print("dark active")
+            webView.isOpaque = false
+        case .unspecified:
+            webView.isOpaque = true
+        @unknown default:
+            fatalError()
+        }
     }
     
 }

@@ -24,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let networkManager = NetworkManager()
         let mainVC = MainScreenViewController(networkManager: networkManager)
         window?.rootViewController = UINavigationController(rootViewController: mainVC)
+        window?.backgroundColor = .clear
         window?.makeKeyAndVisible()
     }
 
