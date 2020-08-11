@@ -30,10 +30,13 @@ class DetailViewController: UIViewController {
         switch traitCollection.userInterfaceStyle {
         case .light:
             webView.isOpaque = true
+            view.backgroundColor = .white
         case .dark:
             webView.isOpaque = false
+            view.backgroundColor = .black
         default:
             webView.isOpaque = true
+            view.backgroundColor = .white
         }
         
         let request = URLRequest(url: url)
